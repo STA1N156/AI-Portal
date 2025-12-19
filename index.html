@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Hub</title>
+    <title>AI 工具导航</title>
     <style>
         :root {
             --bg-color: #0f0f13;
@@ -97,6 +97,7 @@
 
         /* 头部样式 */
         header {
+            position: relative;
             text-align: center;
             padding: 3rem 1rem 2rem;
             max-width: 800px;
@@ -130,6 +131,7 @@
             letter-spacing: 0.01em;
             opacity: 0;
             animation: fadeInDown 1s var(--ease-out-back) 0.2s forwards;
+            will-change: transform, opacity;
         }
 
         /* 卡片容器 */
