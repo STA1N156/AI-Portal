@@ -50,66 +50,66 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0f0f13 100%);
+            background: radial-gradient(circle at 50% 50%, #161625 0%, #0a0a0e 100%);
             overflow: hidden;
         }
 
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.3;
-            animation: float 25s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            filter: blur(120px);
+            opacity: 0.25;
+            animation: float 40s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
         }
 
         .orb-1 {
-            width: 400px;
-            height: 400px;
+            width: 600px;
+            height: 600px;
             background: var(--accent-1);
-            top: -100px;
-            left: -100px;
+            top: -150px;
+            left: -150px;
             animation-delay: 0s;
         }
 
         .orb-2 {
-            width: 500px;
-            height: 500px;
+            width: 700px;
+            height: 700px;
             background: var(--accent-2);
-            bottom: -150px;
-            right: -150px;
-            animation-delay: -5s;
+            bottom: -200px;
+            right: -200px;
+            animation-delay: -8s;
         }
 
         .orb-3 {
-            width: 300px;
-            height: 300px;
+            width: 500px;
+            height: 500px;
             background: var(--accent-3);
-            top: 40%;
-            left: 60%;
-            animation-delay: -10s;
+            top: 30%;
+            left: 50%;
+            animation-delay: -15s;
         }
 
         @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            33% { transform: translate(30px, -50px); }
-            66% { transform: translate(-20px, 20px); }
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -80px) scale(1.1); }
+            66% { transform: translate(-30px, 40px) scale(0.95); }
         }
 
         /* 头部样式 */
         header {
             text-align: center;
-            padding: 5rem 1rem 3rem;
+            padding: 3rem 1rem 2rem;
             max-width: 800px;
             z-index: 10;
-            animation: fadeInDown 1.2s var(--ease-out-back);
+            animation: fadeInDown 1.4s var(--ease-out-back);
         }
 
         h1 {
             font-size: 3.5rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 1.2rem;
-            background: linear-gradient(180deg, #fff 0%, #b0b0b0 100%);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            background: linear-gradient(180deg, #fff 0%, #c0c0c0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 20px 40px rgba(0,0,0,0.3);
@@ -154,17 +154,17 @@
         .card {
             width: 100%;
             height: 100%;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 30px;
             padding: 3rem 2.5rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            transition: transform 0.2s var(--ease-smooth), box-shadow 0.4s var(--ease-smooth), border-color 0.4s var(--ease-smooth);
+            transition: transform 0.3s var(--ease-smooth), box-shadow 0.4s var(--ease-smooth), border-color 0.4s var(--ease-smooth), background 0.4s;
             transform-style: preserve-3d;
             text-decoration: none;
             color: inherit;
@@ -191,7 +191,8 @@
             }
 
             .card:hover {
-                border-color: rgba(255,255,255,0.2);
+                background: rgba(255, 255, 255, 0.04);
+                border-color: rgba(255,255,255,0.15);
                 box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 30px rgba(255,255,255,0.05);
             }
         }
@@ -346,7 +347,7 @@
 
     <header>
         <h1>Open Hub</h1>
-        <p class="subtitle">探索免费、开源且强大的AI工具，开启智能体验。</p>
+        <p class="subtitle">探索免费、开源且强大的AI工具。</p>
     </header>
 
     <main class="container">
