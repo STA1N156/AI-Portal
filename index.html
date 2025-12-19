@@ -1,1 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 工具导航</title>
+    <style>
+        :root {
+            --bg-color: #0f0f13;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-sub: #a0a0b0;
+            --accent-1: #00f2ff;
+            --accent-2: #7000ff;
+            --accent-3: #ff0055;
+            --font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            
+            /* 非线性动画曲线 */
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            perspective: 1000px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 动态背景 */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0f0f13 100%);
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            animation: float 25s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-1);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: var(--accent-2);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-3);
+            top: 40%;
+            left: 60%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            33% { transform: translate(30px, -50px); }
+            66% { transform: translate(-20px, 20px); }
+        }
+
+        /* 头部样式 */
+        header {
+            text-align: center;
+            padding: 5rem 1rem 3rem;
+            max-width: 800px;
+            z-index: 10;
+            animation: fadeInDown 1.2s var(--ease-out-back);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.2rem;
+            background: linear-gradient(180deg, #fff 0%, #b0b0b0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-sub);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+        }
+
+        /* 卡片容器 */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem;
+            width: 100%;
+            max-width: 1400px;
+            z-index: 10;
+        }
+
+        /* 3D 卡片样式 */
+        .card-wrapper {
+            position: relative;
+            width: 380px;
+            height: 520px;
+            perspective: 1000px;
+            opacity: 0;
+            animation: fadeInUp 1s var(--ease-out-back) forwards;
+        }
+
+        .card-wrapper:nth-child(1) { animation-delay: 0.1s; }
+        .card-wrapper:nth-child(2) { animation-delay: 0.2s; }
+        .card-wrapper:nth-child(3) { animation-delay: 0.3s; }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 30px;
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transition: transform 0.2s var(--ease-smooth), box-shadow 0.4s var(--ease-smooth), border-color 0.4s var(--ease-smooth);
+            transform-style: preserve-3d;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.03), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s var(--ease-smooth);
+            pointer-events: none;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 30px rgba(255,255,255,0.05);
+        }
+
+        /* 卡片内容 */
+        .card-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1.5rem;
+            transform: translateZ(30px);
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            transform: translateZ(25px);
+            background: linear-gradient(90deg, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            transform: translateZ(20px);
+            flex-grow: 1;
+        }
+
+        .features {
+            list-style: none;
+            margin-bottom: 2rem;
+            transform: translateZ(15px);
+        }
+
+        .features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: #d0d0d0;
+        }
+
+        .features li svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            fill: var(--accent-1);
+        }
+
+        .card-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.4s var(--ease-smooth);
+            transform: translateZ(35px);
+            letter-spacing: 0.02em;
+        }
+
+        .card-btn:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transform: translateZ(45px) scale(1.05);
+        }
+
+        /* 特定卡片配色 */
+        .card-chat .features li svg { fill: var(--accent-1); }
+        .card-novel .features li svg { fill: var(--accent-2); }
+        .card-roleplay .features li svg { fill: var(--accent-3); }
+
+        .card-chat:hover .card-title { background: linear-gradient(90deg, #fff, var(--accent-1)); -webkit-background-clip: text; }
+        .card-novel:hover .card-title { background: linear-gradient(90deg, #fff, var(--accent-2)); -webkit-background-clip: text; }
+        .card-roleplay:hover .card-title { background: linear-gradient(90deg, #fff, var(--accent-3)); -webkit-background-clip: text; }
+
+        /* 动画定义 */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(60px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes fadeInUpFooter {
+            from { opacity: 0; transform: translateY(30px); }
+        }
+
+        /* 页脚样式 */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-sub);
+            font-size: 0.85rem;
+            margin-top: auto;
+            width: 100%;
+            z-index: 10;
+            opacity: 0.6;
+            animation: fadeInUpFooter 1s var(--ease-smooth) 0.6s backwards;
+            letter-spacing: 0.05em;
+            transition: opacity 0.3s var(--ease-smooth);
+            cursor: default;
+        }
+        
+        footer:hover {
+            opacity: 1;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            .container { padding: 1rem; gap: 1.5rem; }
+            .card-wrapper { width: 100%; height: auto; min-height: 480px; }
+            .card { padding: 2rem; }
+            /* 移动端禁用复杂的3D倾斜，保留简单的缩放 */
+            .card-wrapper { perspective: none; }
+            .card { transform: none !important; }
+            .card:active { transform: scale(0.98) !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <header>
+        <h1>Open Hub</h1>
+        <p class="subtitle">探索免费、开源且强大的AI工具，开启智能体验。</p>
+    </header>
+
+    <main class="container">
+        <!-- Chat Card -->
+        <div class="card-wrapper">
+            <div class="card card-chat">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 8V4H8"></path>
+                        <rect width="16" height="12" x="4" y="8" rx="2"></rect>
+                        <path d="M2 14h2"></path>
+                        <path d="M20 14h2"></path>
+                        <path d="M15 13v2"></path>
+                        <path d="M9 13v2"></path>
+                    </svg>
+                </div>
+                <h2 class="card-title">全能智脑 Chat</h2>
+                <p class="card-desc">
+                    汇聚全球400+顶级模型（GPT, Claude, Deepseek等）。支持图片、视频、音频多模态处理。强大的文件识别与Word一键生成，Diff精准修改，无审查，国内直连。
+                </p>
+                <ul class="features">
+                    <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg> 400+ 全球顶级模型</li>
+                    <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg> 全能多模态 & 文件处理</li>
+                    <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg> 无内容限制 & 极速直连</li>
+                </ul>
+                <a href="https://sta1n156.github.io/AI-Chat/" class="card-btn" target="_blank">立即体验</a>
+            </div>
+        </div>
+
+        <!-- Novel Card -->
+        <div class="card-wrapper">
+            <div class="card card-novel">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        <path d="M12 7v14"></path>
+                    </svg>
+                </div>
+                <h2 class="card-title">灵感织梦 Novel</h2>
+                <p class="card-desc">
+                    专家级文学大模型，支持百万字长篇巨制。自定义世界观与角色设定，打破禁忌的想象力。内置AI评论区与专业评审团，让创作更有乐趣。
+                </p>
+                <ul class="features">
+                    <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg> 百万字长篇生成能力</li>
+                    <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg> 深度世界观 & 角色定制</li>
+                    <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg> 专家级文笔 & 评审团</li>
+                </ul>
+                <a href="https://sta1n156.github.io/AI-Novel/" class="card-btn" target="_blank">开始创作</a>
+            </div>
+        </div>
+
+        <!-- Roleplay Card -->
+        <div class="card-wrapper">
+            <div class="card card-roleplay">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <h2 class="card-title">幻境演绎 Roleplay</h2>
+                <p class="card-desc">
+                    沉浸式角色扮演，自动生成插图。一键生成角色卡，支持预设、世界书、正则等高级功能。高自由度设置，无内容限制，开启第二人生。
+                </p>
+                <ul class="features">
+                    <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg> 自动生图 & 角色卡</li>
+                    <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg> 世界书 & 正则等高级功能</li>
+                    <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg> 无限制 & 极高自由度</li>
+                </ul>
+                <a href="https://sta1n156.github.io/AI-RolePlay/" class="card-btn" target="_blank">进入世界</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        Created by STA1N
+    </footer>
+
+    <script>
+        // 3D Tilt Effect Script
+        const cards = document.querySelectorAll('.card');
+
+        // 仅在非移动设备上启用 Tilt 效果
+        if (window.matchMedia("(min-width: 769px)").matches) {
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // 设置鼠标位置变量供 CSS 使用
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    // 增加旋转灵敏度但限制最大角度，更细腻
+                    const rotateX = ((y - centerY) / centerY) * -8;
+                    const rotateY = ((x - centerX) / centerX) * 8;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
