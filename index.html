@@ -400,6 +400,11 @@
             .card-wrapper { perspective: none; }
             .card { transform: none !important; }
             .card:active { transform: scale(0.98) !important; }
+            
+            /* 移动端重置3D位移，防止按钮消失 */
+            .card-icon, .card-title, .card-desc, .features, .card-btn {
+                transform: none !important;
+            }
         }
     </style>
 </head>
