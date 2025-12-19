@@ -101,7 +101,6 @@
             padding: 3rem 1rem 2rem;
             max-width: 800px;
             z-index: 10;
-            animation: fadeInDown 1.4s var(--ease-out-back);
         }
 
         h1 {
@@ -109,10 +108,16 @@
             font-weight: 700;
             letter-spacing: -0.03em;
             margin-bottom: 1rem;
-            background: linear-gradient(180deg, #fff 0%, #c0c0c0 100%);
+            background: linear-gradient(120deg, #fff 0%, #c0c0c0 40%, #fff 50%, #c0c0c0 60%, #fff 100%);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: fadeInDown 1s var(--ease-out-back), shine 8s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
         }
 
         .subtitle {
@@ -123,6 +128,8 @@
             margin: 0 auto;
             font-weight: 400;
             letter-spacing: 0.01em;
+            opacity: 0;
+            animation: fadeInDown 1s var(--ease-out-back) 0.2s forwards;
         }
 
         /* 卡片容器 */
@@ -147,9 +154,9 @@
             animation: fadeInUp 1s var(--ease-out-back) forwards;
         }
 
-        .card-wrapper:nth-child(1) { animation-delay: 0.1s; }
-        .card-wrapper:nth-child(2) { animation-delay: 0.2s; }
-        .card-wrapper:nth-child(3) { animation-delay: 0.3s; }
+        .card-wrapper:nth-child(1) { animation-delay: 0.2s; }
+        .card-wrapper:nth-child(2) { animation-delay: 0.4s; }
+        .card-wrapper:nth-child(3) { animation-delay: 0.6s; }
 
         .card {
             width: 100%;
@@ -172,6 +179,7 @@
             overflow: hidden;
         }
 
+        /* 鼠标跟随光 */
         .card::before {
             content: '';
             position: absolute;
@@ -179,10 +187,36 @@
             left: 0;
             right: 0;
             height: 100%;
-            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.03), transparent 40%);
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06), transparent 40%);
             opacity: 0;
             transition: opacity 0.5s var(--ease-smooth);
             pointer-events: none;
+            z-index: 1;
+        }
+
+        /* 自动流光 */
+        .card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%);
+            transform: skewX(-25deg);
+            animation: shimmer 7s infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .card-wrapper:nth-child(1) .card::after { animation-delay: 0s; }
+        .card-wrapper:nth-child(2) .card::after { animation-delay: 2.5s; }
+        .card-wrapper:nth-child(3) .card::after { animation-delay: 5s; }
+
+        @keyframes shimmer {
+            0% { left: -150%; }
+            20% { left: 150%; }
+            100% { left: 150%; }
         }
 
         @media (hover: hover) {
@@ -204,6 +238,12 @@
             margin-bottom: 1.5rem;
             transform: translateZ(30px);
             filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+            transition: transform 0.4s var(--ease-elastic), filter 0.4s;
+        }
+
+        .card:hover .card-icon {
+            transform: translateZ(50px) scale(1.1);
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));
         }
 
         .card-title {
@@ -218,7 +258,7 @@
 
         .card-desc {
             font-size: 0.95rem;
-            color: var(--text-sub);
+            color: #b0b0c0;
             line-height: 1.7;
             margin-bottom: 1.5rem;
             transform: translateZ(20px);
@@ -237,7 +277,16 @@
             margin-bottom: 0.5rem;
             font-size: 0.85rem;
             color: #d0d0d0;
+            transition: transform 0.3s var(--ease-smooth), color 0.3s;
         }
+
+        .card:hover .features li {
+            color: #fff;
+        }
+
+        .card:hover .features li:nth-child(1) { transform: translateX(4px); transition-delay: 0.05s; }
+        .card:hover .features li:nth-child(2) { transform: translateX(4px); transition-delay: 0.1s; }
+        .card:hover .features li:nth-child(3) { transform: translateX(4px); transition-delay: 0.15s; }
 
         .features li svg {
             width: 16px;
@@ -260,14 +309,31 @@
             transition: all 0.4s var(--ease-smooth);
             transform: translateZ(35px);
             letter-spacing: 0.02em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
         }
 
         @media (hover: hover) {
             .card-btn:hover {
                 background: #fff;
                 color: #000;
-                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.4);
                 transform: translateZ(45px) scale(1.05);
+            }
+            
+            .card-btn:hover::before {
+                left: 100%;
             }
         }
 
