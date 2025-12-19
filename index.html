@@ -185,13 +185,15 @@
             pointer-events: none;
         }
 
-        .card:hover::before {
-            opacity: 1;
-        }
+        @media (hover: hover) {
+            .card:hover::before {
+                opacity: 1;
+            }
 
-        .card:hover {
-            border-color: rgba(255,255,255,0.2);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 30px rgba(255,255,255,0.05);
+            .card:hover {
+                border-color: rgba(255,255,255,0.2);
+                box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 30px rgba(255,255,255,0.05);
+            }
         }
 
         /* 卡片内容 */
@@ -259,11 +261,18 @@
             letter-spacing: 0.02em;
         }
 
-        .card-btn:hover {
-            background: #fff;
-            color: #000;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            transform: translateZ(45px) scale(1.05);
+        @media (hover: hover) {
+            .card-btn:hover {
+                background: #fff;
+                color: #000;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                transform: translateZ(45px) scale(1.05);
+            }
+        }
+
+        .card-btn:active {
+            transform: translateZ(35px) scale(0.95);
+            background: rgba(255,255,255,0.2);
         }
 
         /* 特定卡片配色 */
@@ -271,9 +280,11 @@
         .card-novel .features li svg { fill: var(--accent-2); }
         .card-roleplay .features li svg { fill: var(--accent-3); }
 
-        .card-chat:hover .card-title { background: linear-gradient(90deg, #fff, var(--accent-1)); -webkit-background-clip: text; }
-        .card-novel:hover .card-title { background: linear-gradient(90deg, #fff, var(--accent-2)); -webkit-background-clip: text; }
-        .card-roleplay:hover .card-title { background: linear-gradient(90deg, #fff, var(--accent-3)); -webkit-background-clip: text; }
+        @media (hover: hover) {
+            .card-chat:hover .card-title { background: linear-gradient(90deg, #fff, var(--accent-1)); -webkit-background-clip: text; }
+            .card-novel:hover .card-title { background: linear-gradient(90deg, #fff, var(--accent-2)); -webkit-background-clip: text; }
+            .card-roleplay:hover .card-title { background: linear-gradient(90deg, #fff, var(--accent-3)); -webkit-background-clip: text; }
+        }
 
         /* 动画定义 */
         @keyframes fadeInDown {
@@ -306,8 +317,10 @@
             cursor: default;
         }
         
-        footer:hover {
-            opacity: 1;
+        @media (hover: hover) {
+            footer:hover {
+                opacity: 1;
+            }
         }
 
         /* 移动端适配 */
